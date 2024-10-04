@@ -1,23 +1,17 @@
-class CustomStack:
+class Solution:
+    def minExtraChars(self, s: str, dictionary: list[str]) -> int:
+        words = set(dictionary)
+        dp = {len(s): 0}
 
-    def __init__(self, maxSize: int):
-        self.stackPosition = 0
-        self.maxSize = maxSize
-        self.stackArray = [0] * maxSize
+        def dfs(i):
+            if i in dp:
+                return dp[i]
 
-    def push(self, x: int) -> None:
-        if self.stackPosition < self.maxSize:
-            self.stackArray[self.stackPosition] = x
-            self.stackPosition += 1
+            res = 1 + dfs(i + 1)  # skip curr char
+            for j in range(i, len(s)):
+                if s[i : j + 1] in words:
+                    res = min(res, dfs(j + 1))
+            dp[i] = res
+            return res
 
-    def pop(self) -> int:
-        if self.stackPosition > 0:
-            self.stackPosition -= 1
-            return self.stackArray[self.stackPosition]
-        else:
-            return -1
-
-    def increment(self, k: int, val: int) -> None:
-        limit = min(k, self.stackPosition)
-        for i in range(limit):
-            self.stackArray[i] += val
+        return dfs(0)
