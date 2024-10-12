@@ -15,3 +15,6 @@ class Solution:
         if k % 2 == 0 and freq[k // 2] % 2 == 1:
             return False
         return True
+    
+        """ if K = 0 then Freq = [2,1,3,0,0,0,0,0]
+        """
